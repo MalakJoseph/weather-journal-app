@@ -1,6 +1,6 @@
 /* Global Variables */
 const api_key = "9b948de7776b6493094f6fa1a3b2a939";
-const base_url = `http://api.openweathermap.org/data/2.5/forecast?id=524901`;
+const base_url = `http://api.openweathermap.org/data/2.5/forecast?id=524901&units=metric`;
 
 // Create a new date instance dynamically with JS
 let d = new Date();
@@ -19,7 +19,7 @@ const onGenerate = () => {
   getWeather(url).then((data) => {
     postData("/projectData", {
       date: newDate,
-      temp: Math.round(data.list[0].main.temp - 273.15),
+      temp: Math.round(data.list[0].main.temp),
       content: feelings,
       city: data.city.name,
       description: data.list[0].weather[0].description,
@@ -29,6 +29,10 @@ const onGenerate = () => {
 
 const getWeather = async (url) => {
   const res = await fetch(url);
+  if (res.status === 404) {
+    document.getElementById("content").innerHTML =
+      "Please write a valid zip code!";
+  }
   try {
     const data = await res.json();
     return data;
