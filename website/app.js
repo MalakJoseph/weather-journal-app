@@ -29,7 +29,7 @@ const onGenerate = () => {
 
 const getWeather = async (url) => {
   const res = await fetch(url);
-  if (res.status === 404) {
+  if (res.status === 404 || res.status === 400) {
     document.getElementById("content").innerHTML =
       "Please write a valid zip code!";
   }
